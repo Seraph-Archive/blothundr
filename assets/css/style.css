@@ -1,0 +1,33 @@
+.score {
+    position: absolute;
+    bottom: 1%;
+    left: 1%;
+}
+
+.time {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+}
+
+.start {
+    text-align: center;
+    color: blueviolet;
+}
+
+.start-button {
+    background-color: blueviolet;
+    color: azure;
+    border-radius: 10px;
+}
+
+
+.hidden {
+    display: none;
+}
+
+.question-button {
+    background-color: blueviolet;
+    color: azure;
+    border-radius: 10px;
+}
