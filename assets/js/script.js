@@ -15,51 +15,33 @@ var submitButton = document.querySelector('#submit')
 //Questions Start
 var questions = [
     {
-        questionName: "Do i love my girlfriend?",
-        answerChoices: [
-            { text: "with everything i have", correct: true },
-            { text :  "yeah", correct: false }, 
-            { text: "nah", correct: false},
-            { text: "girlfriend?", correct: false}]
+        questionName: "How dangerous is Faustian burn?",
+        choices: ["Extremely", "Moderately", "Not at all", "Its good actually"],
+        answer: "Extremely"
     },
     {
-        questionName: "Greatest gamer in the world",
-        answerChoices: [
-            { text: "big boss", correct: true },
-            { text :  "what?", correct: false }, 
-            { text: "nah", correct: false},
-            { text: "huh?", correct: false}]
+        questionName: "What is the funniest number?",
+        choices: ["420", "666", "76", "69"],
+        answer: "69"
 
     },
     {
-        questionName: "Do i love my girlfriend?",
-        answerChoices: [
-            { text: "with everything i have", correct: true },
-            { text :  "yeah", correct: false }, 
-            { text: "nah", correct: false},
-            { text: "girlfriend?", correct: false}]
+        questionName: "Why did we learn baseline html if we're never going to use it?",
+        choices: ["The basics are important conceptually", "We shouldn't have", "Jung hates us", "GT hates us"],
+        answer: "The basics are important conceptually"
     },
     {
-        questionName: "Do i love my girlfriend?",
-        answerChoices: [
-            { text: "with everything i have", correct: true },
-            { text :  "yeah", correct: false }, 
-            { text: "nah", correct: false},
-            { text: "girlfriend?", correct: false}]
+        questionName: "Why wasn't this a coding quiz?",
+        choices: ["I could not care less about finding mediocre coding questions.", "I'm cringe", "Your mother", "I can't code"],
+        answer: "I can't code"
     },
     {
         questionName: "you do not recognize the bodies in the water",
-        answerChoices: [
-            { text: "you do not recognize the bodies in the water", correct: true },
-            { text :  "you do not recognize the bodies in the water", correct: true }, 
-            { text: "you do not recognize the bodies in the water", correct: true},
-            { text: "you do not recognize the bodies in the water", correct: true}]
+        choices: ["you do not recognize the bodies in the water", "you do not recognize the bodies in the water", "you do not recognize the bodies in the water", "you do not recognize the bodies in the water"],
+        answer: "you do not recognize the bodies in the water"
         }
     ];
-
 //Questions end
-
-
 
 function gameStart () {
     console.log("wow");
@@ -84,16 +66,15 @@ function gameStart () {
     questioning();
 }
 
-
 function questioning () {
     var currentQuestion = questions[questionNumber];
 
     questionName.innerHTML = currentQuestion.questionName;
 
-    currentQuestion.answerChoices.forEach(answerChoices => {
+    currentQuestion.choices.forEach(choices => {
         var questionButton = document.createElement("button");
         questionButton.setAttribute("class", ".question-button");
-        questionButton.innerHTML = answerChoices.text;
+        questionButton.innerHTML = choices;
         answerArea.appendChild(questionButton);
         questionButton.addEventListener('click', questionAnswer);
     }
@@ -102,9 +83,9 @@ function questioning () {
 function questionAnswer(event) {
     var chosenAnswer = event.target
     var currentQuestion = questions[questionNumber];
-    var answer = currentQuestion.answerChoices.correct
+    var answer = currentQuestion.answer
     console.log(event.target)
-    if (chosenAnswer === answer) {
+    if (chosenAnswer.textContent !== answer) {
         timeLeft -= 20;
         questionNumber++;
     } else {
@@ -126,34 +107,39 @@ function clearButtons() {
     questioning();
 }
 
-
 function endQuiz() {
     questionName.innerHTML = '';
     answerArea.innerHTML = '';
     var formInput = document.querySelector('#form')
+    var nameInput = document.querySelector('#name')
     formInput.removeAttribute('class', 'hidden')
 
-    var nameSave = formInput.value
     formInput.addEventListener('submit', storeName)
-
-
-
 
     clearInterval(timeDown);
 
-    localStorage.setItem("score", score);
-
     function storeName() {
-        localStorage.setItem("name", JSON.stringify(nameSave))
-        console.log(nameSave)
+        var nameSave = nameInput.value
+        var storage = {
+            name: nameSave,
+            score: score
+        }
+
+        var allScores = localStorage.getItem("allScores");
+        if (allScores === null){
+            allScores = [];
+        } else {
+            allScores = JSON.parse(allScores)
+        }
+
+        allScores.push(storage);
+        var newScores = JSON.stringify(allScores);
+        localStorage.setItem("allScores", newScores);
+        }
     }
-    console.log("heck")
-    console.log(nameSave)
-}
 
 if (timeLeft >= 0) {
     endQuiz()
 }
-
 
 startGame.addEventListener("click", gameStart);
